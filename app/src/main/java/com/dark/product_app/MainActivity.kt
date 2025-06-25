@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,6 +22,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -49,14 +53,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ProductAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) { innerPadding ->
                     HomeScreen(innerPadding)
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun HomeScreen(paddingValues: PaddingValues) {
@@ -74,8 +80,6 @@ fun ProductImages() {
     var otherProductImages by remember { mutableStateOf(listOf<ImageBitmap?>()) }
     var currentProductImage by remember { mutableStateOf<ImageBitmap?>(null) }
 
-
-
     LaunchedEffect(Unit) {
         val productData = fetchProductData(context)
         data = productData
@@ -91,7 +95,12 @@ fun ProductImages() {
     }
 
 
-    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         if (data != null && currentProductImage != null) {
             Image(
                 bitmap = currentProductImage!!,
@@ -103,22 +112,29 @@ fun ProductImages() {
             Text("Loading...")
         }
 
-        LazyRow {
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            contentPadding = PaddingValues(20.dp)
+        ) {
             items(otherProductImages) { otherImage ->
                 if (otherImage != null) {
-                    Image(
-                        bitmap = otherImage,
-                        contentDescription = null,
-                        modifier = Modifier.size(120.dp),
-                        contentScale = ContentScale.Crop
-                    )
+                    OutlinedCard(
+                        border = BorderStroke(1.dp, Color.LightGray),
+
+                        ) {
+                        Image(
+                            bitmap = otherImage,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(120.dp)
+                                .padding(8.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
             }
         }
-
     }
-
-
 }
 
 

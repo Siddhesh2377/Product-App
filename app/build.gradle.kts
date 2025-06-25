@@ -41,17 +41,11 @@ android {
 }
 
 dependencies {
-    implementation("io.ktor:ktor-client-core:2.3.9")
-    implementation("io.ktor:ktor-client-okhttp:2.3.9")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.9")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.9")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
+    //DATA LIBS
+    implementation(libs.kotlinx.serialization.json)
 
-
-    implementation("io.coil-kt:coil-compose:2.7.0") // For Image loading
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
-
+    //CORE LIBS
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -60,11 +54,15 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //TESTING LIBS
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    //DEBUG IMPL LIBS
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

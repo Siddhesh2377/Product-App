@@ -16,6 +16,9 @@ import java.io.InputStreamReader
 import java.net.MalformedURLException
 import java.net.URL
 
+
+val jsonFormatter = Json { ignoreUnknownKeys = true }
+
 suspend fun fetchProductData(context: Context): ProductResponse {
     return withContext(Dispatchers.IO) {
         val jsonString = getJsonFile(context)
