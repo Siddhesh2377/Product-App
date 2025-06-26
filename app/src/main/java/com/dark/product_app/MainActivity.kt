@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -63,7 +65,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun HomeScreen(paddingValues: PaddingValues) {
     Column(modifier = Modifier.padding(paddingValues)) {
@@ -71,7 +72,6 @@ fun HomeScreen(paddingValues: PaddingValues) {
         ProductImages()
     }
 }
-
 @Composable
 fun ProductImages() {
     val context = LocalContext.current
@@ -102,12 +102,14 @@ fun ProductImages() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (data != null && currentProductImage != null) {
-            Image(
-                bitmap = currentProductImage!!,
-                contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop
-            )
+            Crossfade(currentProductImage) {
+                Image(
+                    bitmap = it!!,
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxWidth(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         } else {
             Text("Loading...")
         }
@@ -118,10 +120,9 @@ fun ProductImages() {
         ) {
             items(otherProductImages) { otherImage ->
                 if (otherImage != null) {
-                    OutlinedCard(
-                        border = BorderStroke(1.dp, Color.LightGray),
-
-                        ) {
+                    OutlinedCard(modifier = Modifier.clickable{
+                        currentProductImage = otherImage
+                    }, border = BorderStroke(1.dp, Color.LightGray)) {
                         Image(
                             bitmap = otherImage,
                             contentDescription = null,
@@ -136,8 +137,6 @@ fun ProductImages() {
         }
     }
 }
-
-
 @Composable
 fun TopBar() {
     Row(
