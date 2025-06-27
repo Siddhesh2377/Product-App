@@ -60,6 +60,7 @@ import com.dark.product_app.components.Chip
 import com.dark.product_app.components.GradientButton
 import com.dark.product_app.components.InfoStackText
 import com.dark.product_app.components.StockInfo
+import com.dark.product_app.components.ViewAll
 import com.dark.product_app.repo.Product
 import com.dark.product_app.repo.ProductResponse
 import com.dark.product_app.repo.fetchProductData
@@ -317,7 +318,7 @@ fun ProductDetail(product: Product) {
             }
         }
 
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             val rating = product.rating.average
 
             Spacer(Modifier.width(15.dp))
@@ -342,9 +343,7 @@ fun ProductDetail(product: Product) {
 
             Spacer(Modifier.weight(1f))
 
-
-            Text("View All")
-            Icon()
+            ViewAll()
         }
     }
 }
