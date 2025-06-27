@@ -4,26 +4,26 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProductResponse(
-    val product: Product
+    val product: Product = Product()
 )
 @Serializable
 data class Product(
-    val id: String,
-    val name: String,
-    val brand: String,
-    val category: String,
-    val price: Price,
-    val images: List<String>,
-    val thumbnails: List<String>,
-    val description: String,
-    val specifications: Specifications,
-    val features: List<String>,
-    val variants: Variants,
-    val stock: Stock,
-    val rating: Rating,
-    val metadata: Metadata,
-    val seo: Seo,
-    val availability: Availability
+    val id: String = "",
+    val name: String = "",
+    val brand: String = "",
+    val category: String = "",
+    val price: Price = Price(0.0, 0.0, "", ""),
+    val images: List<String> = emptyList(),
+    val thumbnails: List<String> = emptyList(),
+    val description: String = "",
+    val specifications: Specifications = Specifications("", "", "", "", "", "", ""),
+    val features: List<String> = emptyList(),
+    val variants: Variants = Variants(emptyList()),
+    val stock: Stock = Stock("", 0, 0),
+    val rating: Rating = Rating(0.0, 0, Distribution(0, 0, 0, 0, 0)),
+    val metadata: Metadata = Metadata("", "", "", "", "", ""),
+    val seo: Seo = Seo("", "", emptyList()),
+    val availability: Availability = Availability("", "", emptyList())
 )
 @Serializable
 data class Price(

@@ -42,6 +42,9 @@ android {
 
 dependencies {
 
+    //EXTERNAL-PROJECT
+    implementation(project(":ratingbar"))
+
     //DATA LIBS
     implementation(libs.kotlinx.serialization.json)
 
