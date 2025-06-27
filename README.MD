@@ -27,7 +27,7 @@
 ###### 1. Using IDE like Android Studio
 
 ```` text
-> Copy This URL : https://github.com/Siddhesh2377/HMD-DSA.git
+> Copy This URL : https://github.com/Siddhesh2377/Product-App.git.git
 
 > Clone The Repo By CLicking on the Button ( Clone From VCS ) or Somthing like that
   From The Project Screen 
