@@ -32,15 +32,18 @@ import androidx.compose.material.icons.twotone.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LoadingIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,35 +59,57 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.dark.product_app.components.BounceButton
-import com.dark.product_app.components.Chip
-import com.dark.product_app.components.GradientButton
-import com.dark.product_app.components.InfoStackText
-import com.dark.product_app.components.LimitedTimeOfferCard
-import com.dark.product_app.components.ProductInfo
-import com.dark.product_app.components.StockInfo
-import com.dark.product_app.components.ViewAll
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.dark.product_app.components.button.BounceButton
+import com.dark.product_app.components.button.GradientButton
+import com.dark.product_app.components.button.ViewAll
+import com.dark.product_app.components.card.LimitedTimeOfferCard
+import com.dark.product_app.components.text.InfoStackText
+import com.dark.product_app.components.text.ProductInfo
+import com.dark.product_app.components.text.StockInfo
+import com.dark.product_app.components.util.Chip
 import com.dark.product_app.repo.Product
+import com.dark.product_app.repo.ProductRepository.loadImageSafe
 import com.dark.product_app.repo.ProductResponse
-import com.dark.product_app.repo.fetchProductData
-import com.dark.product_app.repo.loadImageSafe
 import com.dark.product_app.ui.theme.ProductAppTheme
+import com.dark.product_app.viewModel.ProductViewModel
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarStyle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalMaterial3ExpressiveApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel: ProductViewModel = viewModel()
+
+            var data: ProductResponse? by remember { mutableStateOf(ProductResponse()) }
+            LaunchedEffect(Unit) {
+                viewModel.loadProductData()
+            }
+            val productData by viewModel.productData.collectAsState()
+            data = productData
+
             ProductAppTheme {
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(), bottomBar = {
-                        BottomBar()
-                    }) { innerPadding ->
-                    HomeScreen(innerPadding)
+                if (data == null) {
+                    Column(
+                        Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        LoadingIndicator(Modifier.size(130.dp))
+                        Text("Loading Data....", style = MaterialTheme.typography.headlineMedium)
+                    }
+                } else {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(), bottomBar = {
+                            BottomBar()
+                        }) { innerPadding ->
+                        HomeScreen(innerPadding, data!!)
+                    }
                 }
             }
         }
@@ -138,15 +163,8 @@ fun BottomBar() {
 }
 
 @Composable
-fun HomeScreen(paddingValues: PaddingValues) {
+fun HomeScreen(paddingValues: PaddingValues, data: ProductResponse) {
     Column(modifier = Modifier.padding(paddingValues)) {
-        var data by remember { mutableStateOf(ProductResponse()) }
-        val context = LocalContext.current
-
-        LaunchedEffect(Unit) {
-            val productData = fetchProductData(context)
-            data = productData
-        }
 
         TopBar()
         val scrollState = rememberScrollState()

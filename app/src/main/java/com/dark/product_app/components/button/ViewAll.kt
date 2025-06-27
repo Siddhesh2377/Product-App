@@ -1,4 +1,4 @@
-package com.dark.product_app.components
+package com.dark.product_app.components.button
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon

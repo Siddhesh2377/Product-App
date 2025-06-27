@@ -10,7 +10,7 @@ object RatingBarUtils {
         starSizeInPx: Float,
     ): Float {
 
-        if(draggedX<=0){
+        if (draggedX <= 0) {
             return 0f
         }
 

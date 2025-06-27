@@ -7,6 +7,7 @@ import kotlinx.serialization.json.JsonObject
 data class ProductResponse(
     val product: Product = Product()
 )
+
 @Serializable
 data class Product(
     val id: String = "",
@@ -26,6 +27,7 @@ data class Product(
     val seo: Seo = Seo("", "", emptyList()),
     val availability: Availability = Availability("", "", emptyList())
 )
+
 @Serializable
 data class Price(
     val current: Double,
@@ -33,6 +35,7 @@ data class Price(
     val currency: String,
     val currencySymbol: String
 )
+
 @Serializable
 data class Specifications(
     val material: String,
@@ -43,22 +46,26 @@ data class Specifications(
     val quantity: String,
     val size: String
 )
+
 @Serializable
 data class Variants(
     val sizes: List<String>
 )
+
 @Serializable
 data class Stock(
     val status: String,
     val quantity: Int,
     val lowStockThreshold: Int
 )
+
 @Serializable
 data class Rating(
     val average: Double,
     val count: Int,
     val distribution: Distribution
 )
+
 @Serializable
 data class Distribution(
     val `5`: Int,
@@ -67,6 +74,7 @@ data class Distribution(
     val `2`: Int,
     val `1`: Int
 )
+
 @Serializable
 data class Metadata(
     val productCode: String,
@@ -76,12 +84,14 @@ data class Metadata(
     val manufacturer: String,
     val countryOfOrigin: String
 )
+
 @Serializable
 data class Seo(
     val title: String,
     val description: String,
     val keywords: List<String>
 )
+
 @Serializable
 data class Availability(
     val status: String,

@@ -1,4 +1,4 @@
-package com.dark.product_app.components
+package com.dark.product_app.components.card
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -76,7 +76,10 @@ fun LimitedTimeOfferCard() {
                 .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Spacer(Modifier.width(0.dp))
                 Icon(
                     painter = painterResource(R.drawable.zap),

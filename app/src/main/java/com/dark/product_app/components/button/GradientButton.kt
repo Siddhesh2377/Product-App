@@ -1,4 +1,4 @@
-package com.dark.product_app.components
+package com.dark.product_app.components.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

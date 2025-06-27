@@ -1,4 +1,4 @@
-package com.dark.product_app.components
+package com.dark.product_app.components.text
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
@@ -10,7 +10,10 @@ import androidx.compose.ui.text.font.FontWeight
 @Composable
 fun InfoStackText(modifier: Modifier = Modifier, title: String, value: String) {
     Column(modifier = modifier) {
-        Text(title, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal))
+        Text(
+            title,
+            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal)
+        )
         Text(value, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
     }
 }

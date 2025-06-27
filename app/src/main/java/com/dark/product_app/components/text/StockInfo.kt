@@ -1,4 +1,4 @@
-package com.dark.product_app.components
+package com.dark.product_app.components.text
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +13,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun StockInfo(text: String) {
-    Card(shape = RoundedCornerShape(8.dp), colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))) {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
+    ) {
         Text(
             text,
             modifier = Modifier.padding(horizontal = 9.dp, vertical = 6.dp),

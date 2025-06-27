@@ -1,4 +1,4 @@
-package com.dark.product_app.components
+package com.dark.product_app.components.util
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
