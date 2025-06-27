@@ -19,7 +19,7 @@
 - Target SDK: API 34 (Android 14)
 
 #### RELEASE BUILD APK
-- [APK FILE](https://github.com/Siddhesh2377/Product-App/releases/download/FINAL/product.apk)
+- [APK FILE](https://github.com/Siddhesh2377/Product-App/releases)
 
 
 #### How To Build The Project
