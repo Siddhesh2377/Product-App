@@ -39,7 +39,7 @@
 ###### 2. Using CLI
 
 ```` shell
-git clone https://github.com/Siddhesh2377/HMD-DSA.git
+git clone https://github.com/Siddhesh2377/Product-App.git
 cd HMD-DSA
 ./gradlew installDebug
 
