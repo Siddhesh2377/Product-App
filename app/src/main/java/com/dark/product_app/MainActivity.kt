@@ -56,9 +56,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import com.dark.product_app.components.BounceButton
 import com.dark.product_app.components.Chip
 import com.dark.product_app.components.GradientButton
 import com.dark.product_app.components.InfoStackText
+import com.dark.product_app.components.LimitedTimeOfferCard
+import com.dark.product_app.components.ProductInfo
 import com.dark.product_app.components.StockInfo
 import com.dark.product_app.components.ViewAll
 import com.dark.product_app.repo.Product
@@ -78,12 +81,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProductAppTheme {
                 Scaffold(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    bottomBar = {
+                    modifier = Modifier.fillMaxSize(), bottomBar = {
                         BottomBar()
-                    }
-                ) { innerPadding ->
+                    }) { innerPadding ->
                     HomeScreen(innerPadding)
                 }
             }
@@ -100,13 +100,18 @@ fun BottomBar() {
                 .padding(horizontal = 30.dp),
             horizontalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+            val addedToFav = remember { mutableStateOf(true) }
+
             IconButton(
-                onClick = {},
+                onClick = {
+                    addedToFav.value = !addedToFav.value
+                },
                 modifier = Modifier.size(50.dp),
                 colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Icon(
-                    painterResource(R.drawable.heart_empty),
+                    painterResource(if (addedToFav.value) R.drawable.heart_empty else R.drawable.heart_filled),
+                    tint = Color.Unspecified,
                     contentDescription = null
                 )
             }
@@ -118,14 +123,14 @@ fun BottomBar() {
             ) {
 
             }
+
             IconButton(
                 onClick = {},
                 modifier = Modifier.size(50.dp),
                 colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Icon(
-                    Icons.Outlined.Share,
-                    contentDescription = null
+                    Icons.Outlined.Share, contentDescription = null
                 )
             }
         }
@@ -146,7 +151,7 @@ fun HomeScreen(paddingValues: PaddingValues) {
         TopBar()
         val scrollState = rememberScrollState()
 
-        Column(
+        if (data.product.features.isNotEmpty()) Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState),
@@ -198,8 +203,8 @@ fun ProductImages(data: ProductResponse) {
     LaunchedEffect(data) {
         val imagesList = data.product.images
         // Fetch current image separately
-        if (imagesList.isNotEmpty())
-            currentProductImage = loadImageSafe(imagesList[0], context, "product_image_0")
+        if (imagesList.isNotEmpty()) currentProductImage =
+            loadImageSafe(imagesList[0], context, "product_image_0")
 
         // Parallel fetch of all images including first if needed
         otherProductImages = imagesList.mapIndexed { index, imageUrl ->
@@ -254,13 +259,14 @@ fun ProductImages(data: ProductResponse) {
 @Composable
 fun ProductDetail(product: Product) {
     Column(
-        Modifier.padding(horizontal = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        Modifier.padding(horizontal = 12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp), verticalAlignment = Alignment.CenterVertically
+                .padding(vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Chip(product.category)
             Spacer(Modifier.width(10.dp))
@@ -294,6 +300,7 @@ fun ProductDetail(product: Product) {
                 )
             }
         }
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
@@ -311,9 +318,7 @@ fun ProductDetail(product: Product) {
                 )
 
                 InfoStackText(
-                    modifier = Modifier.weight(1f),
-                    title = "SKU: ",
-                    value = product.metadata.sku
+                    modifier = Modifier.weight(1f), title = "SKU: ", value = product.metadata.sku
                 )
             }
         }
@@ -329,13 +334,11 @@ fun ProductDetail(product: Product) {
                 spaceBetween = 0.dp,
                 size = 20.dp,
                 onValueChange = {},
-                onRatingChanged = {}
-            )
+                onRatingChanged = {})
 
             Spacer(Modifier.width(5.dp))
 
             Text(product.rating.average.toString(), fontWeight = FontWeight.Bold)
-
 
             Spacer(Modifier.width(15.dp))
 
@@ -345,5 +348,39 @@ fun ProductDetail(product: Product) {
 
             ViewAll()
         }
+
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp)
+        ) {
+            var selectedSize by remember { mutableStateOf<String?>(null) }
+
+            if (product.variants.sizes.isNotEmpty()) selectedSize = product.variants.sizes[1]
+
+            Text(
+                "Size",
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+            )
+
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp)
+            ) {
+                items(product.variants.sizes) {
+                    val isSelected = it == selectedSize
+
+                    BounceButton(
+                        it,
+                        buttonColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.LightGray
+                    ) {
+                        selectedSize = it
+                    }
+                }
+            }
+        }
+
+        LimitedTimeOfferCard()
+        ProductInfo(product)
     }
 }

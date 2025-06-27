@@ -1,6 +1,7 @@
 package com.dark.product_app.repo
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class ProductResponse(
@@ -16,7 +17,7 @@ data class Product(
     val images: List<String> = emptyList(),
     val thumbnails: List<String> = emptyList(),
     val description: String = "",
-    val specifications: Specifications = Specifications("", "", "", "", "", "", ""),
+    val specifications: JsonObject = JsonObject(emptyMap()), //= Specifications("", "", "", "", "", "", ""),
     val features: List<String> = emptyList(),
     val variants: Variants = Variants(emptyList()),
     val stock: Stock = Stock("", 0, 0),
